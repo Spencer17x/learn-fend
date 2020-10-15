@@ -1,0 +1,13 @@
+{
+  "name": "learn-fend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Spencer17x <1253478653@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "commit": "git-cz"
+  },
+  "devDependencies": {
+    "git-cz": "^4.7.1"
+  }
+}
