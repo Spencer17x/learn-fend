@@ -13,6 +13,8 @@ class Eventhub {
 		// this.events[eventName].forEach(cb => {
 		// 	cb.apply(null, args);
 		// });
+		// 此处this.events[eventName].filter之后产生的是新数组，
+		// 所以就算splice之后影响了this.events[eventName]数组，但是不影响这个新产生的数组，所以输出符合预想
 		this.events[eventName].filter(cb => cb !== null).forEach(cb => {
 			cb.apply(null, args);
 		});
@@ -21,7 +23,7 @@ class Eventhub {
 	off(eventName, callback) {
 		this.events[eventName] = this.events[eventName] || [];
 		const index = this.events[eventName].findIndex(cb => callback === cb);
-		// 使用 splice 会影响数组的长度，导致输出会有问题
+		// 使用 splice 会影响数组的长度，导致输出会有问题，与预期不符
 		// this.events[eventName].splice(index, 1);
 		this.events[eventName][index] = null;
 	}
