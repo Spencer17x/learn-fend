@@ -14,10 +14,3 @@ Function.prototype.myApply = function (context) {
 	delete context.fn;
 	return result;
 };
-
-function show(a, b) {
-	console.log(this, a, b);
-}
-
-show.myApply({ a: 1 }, [2, 3]);
-show.myApply({ a: 1 });

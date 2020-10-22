@@ -5,9 +5,11 @@
   "author": "Spencer17x <1253478653@qq.com>",
   "license": "MIT",
   "scripts": {
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "test": "jest"
   },
   "devDependencies": {
-    "git-cz": "^4.7.1"
+    "git-cz": "^4.7.1",
+    "jest": "^26.6.0"
   }
 }

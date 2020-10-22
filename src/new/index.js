@@ -1,8 +1,3 @@
-function show(o) {
-	this.a = 1;
-	this.b = o;
-}
-
 function create(...args) {
 	const obj = {};
 	const Con = [].shift.call(args);
@@ -11,6 +6,4 @@ function create(...args) {
 	return result instanceof Object ? result : obj;
 }
 
-const obj = create(show, 2);
-
-console.log(obj);
+module.exports = create;
