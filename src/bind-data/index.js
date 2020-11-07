@@ -1,12 +1,8 @@
-const obj = {
-	key_1: 1,
-	key_2: 2
-};
-
-function func(key) {
-	console.log(key + ' 的值发生改变：' + this[key]);
-}
-
+/**
+ * 实现一个bindData函数，当obj属性值发现变化执行func函数
+ * @param obj
+ * @param func
+ */
 const bindData = (obj, func) => {
 	Object.keys(obj).forEach(key => {
 		let val = obj[key];
@@ -22,6 +18,4 @@ const bindData = (obj, func) => {
 	});
 };
 
-bindData(obj, func);
-obj.key_1 = 2; // 此时自动输出 "key_1 的值发生改变：2"
-obj.key_2 = 1; // 此时自动输出 "key_2 的值发生改变：1"
+module.exports = bindData;

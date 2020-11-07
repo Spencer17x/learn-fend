@@ -9,10 +9,3 @@ Function.prototype.myCall = function (context) {
 	delete context.fn;
 	return result;
 };
-
-function show(a, b) {
-	console.log(this, a, b);
-}
-
-show.myCall({ a: 1 }, 2, 3);
-show.myCall({ a: 1 });
