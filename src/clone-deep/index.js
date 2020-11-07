@@ -13,6 +13,8 @@
 /**
  * MessageChannel 实现深拷贝
  * 如果你所需拷贝的对象含有内置类型并且不包含函数，可以使用 MessageChannel
+ * 注意该方法是异步的
+ * 可以处理 undefined 和循环引用对象
  * @param obj
  * @returns {Promise<unknown>}
  */
@@ -23,23 +25,6 @@ function structuralClone(obj) {
 		port1.postMessage(obj);
 	});
 }
-
-const obj = {
-	a: 1,
-	b: {
-		c: 2
-	}
-};
-
-obj.b.d = obj.b;
-
-// 注意该方法是异步的
-// 可以处理 undefined 和循环引用对象
-const test = async () => {
-	const clone = await structuralClone(obj);
-	console.log(clone);
-};
-// test();
 
 /**
  * 简易的深拷贝
@@ -59,9 +44,7 @@ function cloneDeep(source) {
 	return source;
 }
 
-const source = { a: 1, b: { c: { d: 2 } }, e: 3 };
-const cloned = cloneDeep(source);
-source.b.c.d = 4;
-
-console.log('source', source);
-console.log('clonedArray', cloned);
+module.exports = {
+	structuralClone,
+	cloneDeep
+}
