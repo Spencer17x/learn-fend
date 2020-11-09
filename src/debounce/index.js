@@ -14,6 +14,4 @@ function debounce(fn, delay) {
 	};
 }
 
-const fn = debounce(n => console.log(n), 2000);
-
-fn(1);
+module.exports = debounce;

@@ -5,7 +5,7 @@
  * @returns {function(...[*]=): void}
  */
 function throttle(fn, delay) {
-	let lastTime = Date.now();
+	let lastTime = 0;
 	return function (...args) {
 		if (Date.now() - lastTime >= delay) {
 			lastTime = Date.now();
@@ -14,8 +14,4 @@ function throttle(fn, delay) {
 	};
 }
 
-const fn = throttle(num => console.log(num), 2000);
-
-setInterval(() => {
-	fn(1);
-}, 500);
+module.exports = throttle;
