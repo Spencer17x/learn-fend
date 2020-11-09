@@ -1,9 +1,3 @@
-const template = '我是{{name}}，年龄{{age}}，性别{{sex}}';
-const data = {
-	name: '姓名',
-	age: 18
-};
-
 const render = (template, data) => {
 	// 编写代码
 	const reg = /\{\{(\w+)\}\}/; // 模板字符串正则
@@ -15,5 +9,4 @@ const render = (template, data) => {
 	return template; // 如果模板没有模板字符串直接返回
 };
 
-const html = render(template, data);
-console.log(html);
+module.exports = render;
