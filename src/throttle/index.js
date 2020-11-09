@@ -7,8 +7,9 @@
 function throttle(fn, delay) {
 	let lastTime = 0;
 	return function (...args) {
-		if (Date.now() - lastTime >= delay) {
-			lastTime = Date.now();
+		let now = +new Date()
+		if (now - lastTime > delay) {
+			lastTime = now;
 			fn.apply(this, args);
 		}
 	};
