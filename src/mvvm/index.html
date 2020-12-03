@@ -18,8 +18,9 @@
     </ul>
     <h3>{{msg}}</h3>
     <div v-text="msg"></div>
-    <!-- <div v-html="htmlStr"></div> -->
+    <div v-html="htmlStr"></div>
     <input type="text" v-model="msg" />
+    <button v-on:click="onCallMe">Click Me</button>
   </div>
   <script src="./MVue.js"></script>
   <script>
@@ -31,7 +32,13 @@
           age: 18,
           fav: '姑娘'
         },
-        msg: '学习MVVM实现原理'
+        msg: '学习MVVM实现原理',
+        htmlStr: '这是htmlStr'
+      },
+      methods: {
+        onCallMe(event) {
+          console.log('Click Me')
+        }
       }
     })
   </script>
