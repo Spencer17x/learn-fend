@@ -57,8 +57,32 @@ class Dep {
  * @class Observer
  */
 class Observer {
-  constructor(data) {
+  constructor(data, vm) {
     this.observer(data);
+    this.proxyData(data, vm);
+  }
+
+  /**
+   * 当访问this.a及this.$data.a
+   * @param {*} data 
+   * @param {*} vm 
+   */
+  proxyData(data, vm) {
+    if (data && typeof data === 'object') {
+      Object.keys(data).forEach(key => {
+        let val = data[key];
+        Object.defineProperty(vm, key, {
+          get: () => {
+            return val;
+          },
+          set: newVal => {
+            if (val !== newVal)  {
+              data[key] = newVal;
+            }
+          }
+        })
+      })
+    }
   }
 
   /**

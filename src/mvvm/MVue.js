@@ -251,7 +251,7 @@ class MVue {
     this.$data = options.data;
     this.$options = options;
     if (this.$el) {
-      new Observer(this.$data);
+      new Observer(this.$data, this);
       new Compiler(this.$el, this);
     }
   }
