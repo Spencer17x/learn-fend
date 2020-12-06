@@ -19,9 +19,11 @@
     <h3>{{msg}}</h3>
     <div v-text="msg"></div>
     <div v-html="htmlStr"></div>
-    <input type="text" v-model="msg" />
+    <div>{{msg2.a.b}}</div>
+    <input type="text" v-model="msg2.a.b" />
     <button v-on:click="onCallMe">Click Me</button>
   </div>
+  <script src="./Observer.js"></script>
   <script src="./MVue.js"></script>
   <script>
     let vm = new MVue({
@@ -33,11 +35,17 @@
           fav: '姑娘'
         },
         msg: '学习MVVM实现原理',
-        htmlStr: '这是htmlStr'
+        htmlStr: '这是htmlStr',
+        msg2: {
+          a: {
+            b: 3232
+          }
+        }
       },
       methods: {
-        onCallMe(event) {
-          console.log('Click Me')
+        onCallMe() {
+          this.msg = "变为msg";
+          console.log(this);
         }
       }
     })

@@ -10,6 +10,31 @@ const CompilerUtils = {
     }, vm.$data);
   },
   /**
+   * 针对model深层对象处理数据
+   * @param {*} vm 
+   * @param {*} directiveVal 
+   * @param {*} val 
+   */
+  setVal(vm, directiveVal, val) {
+    return directiveVal.split('.').reduce((acc, cur) => {
+      const isObject = acc[cur] && typeof acc[cur] === 'object';
+      if (!isObject) {
+        acc[cur] = val;
+      }
+      return acc[cur];
+    }, vm.$data);
+  },
+  /**
+   * 针对{{}}语法进行获取值的处理
+   * @param {*} vm 
+   * @param {*} text 
+   */
+  getContent(vm, text) {
+    return text.replace(/\{\{(.+?)\}\}/g, (...args) => {
+      return this.getVal(vm, args[1]);
+    })
+  },
+  /**
    * v-text
    * @param {*} vm 
    * @param {*} node 
@@ -21,12 +46,19 @@ const CompilerUtils = {
     const regexp = /\{\{(.+?)\}\}/g;
     if (regexp.test(text)) {
       val = text.replace(regexp, (...args) => {
+        new Watcher(vm, args[1], () => {
+          const newVal = this.getContent(vm, text);
+          this.updater.textUpdater(node, newVal);
+        })
         return this.getVal(vm, args[1]);
       });
     } else {
       val = this.getVal(vm, directiveVal);
+      new Watcher(vm, directiveVal, newVal => {
+        this.updater.textUpdater(node, newVal);
+      });
     }
-    node.textContent = val;
+    this.updater.textUpdater(node, val);
   },
   /**
    * v-html
@@ -36,7 +68,10 @@ const CompilerUtils = {
    */
   html(vm, node, directiveVal) {
     const val = this.getVal(vm, directiveVal);
-    node.innerHTML = val;
+    new Watcher(vm, directiveVal, newVal => {
+      node.innerHTML = newVal;
+    });
+    this.updater.htmlUpdater(node, val);
   },
   /**
    * v-model
@@ -46,7 +81,14 @@ const CompilerUtils = {
    */
   model(vm, node, directiveVal) {
     const val = this.getVal(vm, directiveVal);
-    node.innerHTML = val;
+    new Watcher(vm, directiveVal, newVal => {
+      this.updater.modelUpdater(node, newVal);
+    });
+    this.updater.modelUpdater(node, val);
+    node.addEventListener('input', event => {
+      const inputVal = event.target.value;
+      this.setVal(vm, directiveVal, inputVal);
+    }, false);
   },
   /**
    * v-on
@@ -58,6 +100,33 @@ const CompilerUtils = {
   on(vm, node, directiveVal, directiveName) {
     const eventHandler = vm.$options.methods[directiveVal];
     node.addEventListener(directiveName, eventHandler.bind(vm), false)
+  },
+  
+  updater: {
+    /**
+     * v-text更新
+     * @param {*} node 
+     * @param {*} val 
+     */
+    textUpdater(node, val) {
+      node.textContent = val;
+    },
+    /**
+     * v-html更新
+     * @param {*} node 
+     * @param {*} val 
+     */
+    htmlUpdater(node, val) {
+      node.innerHTML = val;
+    },
+    /**
+     * v-model更新
+     * @param {*} node 
+     * @param {*} val 
+     */
+    modelUpdater(node, val) {
+      node.value = val;
+    }
   }
 }
 
@@ -182,6 +251,7 @@ class MVue {
     this.$data = options.data;
     this.$options = options;
     if (this.$el) {
+      new Observer(this.$data);
       new Compiler(this.$el, this);
     }
   }
