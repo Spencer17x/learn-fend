@@ -6,10 +6,12 @@
   "license": "MIT",
   "scripts": {
     "commit": "git-cz",
-    "test": "jest"
+    "test": "jest",
+    "promise": "promises-aplus-tests ./src/promise"
   },
   "devDependencies": {
     "git-cz": "^4.7.1",
-    "jest": "^26.6.0"
+    "jest": "^26.6.0",
+    "promises-aplus-tests": "^2.1.2"
   }
 }
